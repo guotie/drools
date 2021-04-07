@@ -1,0 +1,21 @@
+package com.mall.coupon.drools.rules;
+
+import com.mall.coupon.drools.model.Coupon
+import com.mall.coupon.drools.model.EnquiryResult
+
+global com.mall.coupon.drools.service.CouponBatchService couponBatchService
+global com.mall.coupon.drools.service.UserCouponService userCouponService
+global com.mall.coupon.drools.service.UserService userService
+
+//global EnquiryResult results;
+
+rule "coupon-global"
+salience 999
+when
+    $result: EnquiryResult()
+    $coupon: Coupon(groupType == "1")
+then
+    System.out.println("命中 global type, 需要更新用户与coupon关系");
+    // 更新用户的组
+    $result.setTotalDiscount(1000);
+end

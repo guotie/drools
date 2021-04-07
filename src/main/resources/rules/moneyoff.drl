@@ -1,0 +1,31 @@
+package com.mall.coupon.drools.rules;
+
+import com.mall.coupon.drools.model.Coupon
+import com.mall.coupon.drools.model.Order
+import com.mall.coupon.drools.model.EnquiryResult
+
+// 满减
+// 对整个订单满减
+
+rule "rule-moneyoff-order"
+when
+    $result: EnquiryResult()
+    $order: Order()
+    $coupon: Coupon(couponType == "4" && subCouponType == "1" && (minBuyAmount == 0 || $order.totalAmount >= minBuyAmount))
+then
+    System.out.println("命中 money-order");
+    $result.setTotalDiscount($order.getTotalAmount() >= $coupon.getNominal() ? $coupon.getNominal() : $order.getTotalAmount());
+end
+
+// 对特定商品满减
+// todo: 如何判断商品是否属于该sku
+rule "rule-moneyoff-sku"
+when
+    $result: EnquiryResult()
+    $order: Order()
+    $coupon: Coupon(couponType == "4" && subCouponType == "2" &&
+        (minBuyAmount == 0 || $order.totalAmount >= minBuyAmount))
+then
+    System.out.println("命中 moneyoff-sku");
+    $result.setTotalDiscount($order.getTotalAmount() >= $coupon.getNominal() ? $coupon.getNominal() : $order.getTotalAmount());
+end

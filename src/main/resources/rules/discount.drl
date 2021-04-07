@@ -1,0 +1,43 @@
+package com.mall.coupon.drools.rules;
+
+// 折扣型
+
+import com.mall.coupon.drools.model.Coupon
+import com.mall.coupon.drools.model.Order
+import com.mall.coupon.drools.model.OrderItem
+import com.mall.coupon.drools.model.EnquiryResult
+
+global com.mall.coupon.drools.service.CouponBatchService couponBatchService
+global com.mall.coupon.drools.service.UserCouponService userCouponService
+//global com.mall.coupon.drools.service.UserCouponService userCouponService
+global com.mall.coupon.drools.service.UserService userService
+
+// 折扣类优惠券
+
+// order 对整个订单打折
+rule "rule-discount-order"
+when
+    $result: EnquiryResult()
+    $order: Order()
+    $coupon: Coupon(couponType == "5" && subCouponType == "1" &&
+        (minBuyAmount == 0 || $order.totalAmount >= minBuyAmount))
+then
+    System.out.println("命中 discount-order");
+    $result.setTotalDiscount($order.getTotalAmount() * $coupon.getNominal() / 100);
+end
+
+
+// sku 对特定的sku商品打折
+rule "rule-discount-sku"
+when
+    $item: OrderItem()
+    $result: EnquiryResult()
+    $coupon: Coupon(couponType == "5" && subCouponType == "2" &&
+        (minBuyAmount == 0 || $item.totalAmount >= minBuyAmount) &&
+        couponBatchService.skuUsable($coupon.getCouponBatchCode(), $item.getProductSkuId()))
+then
+    System.out.println("coupon code: " + $coupon.getCouponBatchCode());
+    System.out.println("couponBatchService: " + couponBatchService);
+    System.out.println("命中 discount-sku");
+    $result.setTotalDiscount($item.getTotalAmount() * (100 - $coupon.getNominal()) / 100);
+end

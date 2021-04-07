@@ -1,0 +1,9 @@
+package com.mall.coupon.drools.rules;
+
+rule "rule_test"
+when
+    eval(false);
+then
+   System.out.println("命中了test-rule");
+end
+
