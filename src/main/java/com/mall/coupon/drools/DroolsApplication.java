@@ -95,7 +95,7 @@ public class DroolsApplication {
         KieServices kieServices = KieServices.Factory.get();
         KieFileSystem kfs = kieServices.newKieFileSystem();
 //        String pkg = "src/main/resources/";
-//        String pkg = "src/main/java/com/xwsoft/demo/drools/rules/";
+//        String pkg = "src/main/java/com/mall/coupon/drools/rules/";
 
         for (Resource file : getRuleFiles()) {
             log.info("rule file: " + file.getFilename());
@@ -114,6 +114,8 @@ public class DroolsApplication {
             }
             throw new Exception("drools script error");
         }
+
+//        return kieServices.newKieContainer(KieServices.Factory.get().getRepository().getDefaultReleaseId()).newKieSession();
 
         KieSessionRepo.setKieContainer("coupon", kieServices.newKieContainer(KieServices.Factory.get().getRepository().getDefaultReleaseId()));
 
