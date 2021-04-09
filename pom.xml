@@ -8,11 +8,11 @@
         <version>2.4.4</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>com.xwsoft.demo</groupId>
+    <groupId>com.mall.coupon</groupId>
     <artifactId>drools</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>drools</name>
-    <description>Demo project for Spring Boot</description>
+    <description>a mall coupon system use drools engine</description>
     <properties>
         <java.version>1.8</java.version>
         <drools.version>7.51.0.Final</drools.version>
